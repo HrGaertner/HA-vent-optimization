@@ -1,0 +1,10 @@
+{
+    "domain": "ventoptimization",
+    "name": "Vent optimization",
+    "version": "0.5",
+    "documentation": "https://github.com/HrGaertner/vent-optimization",
+    "issue_tracker": "https://github.com/HrGaertner/vent-optimization/issues/",
+    "requirements": [],
+    "dependencies": [],
+    "codeowners": ["@HrGaertner"]
+  }
