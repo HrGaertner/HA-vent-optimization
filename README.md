@@ -1,7 +1,18 @@
 # HA-vent-optimization
 A integration for Home-Assistant that predicts how long you have to open your windows (specially optimized for bathrooms, but should work for any other room too) in order to prevent mold and other nasty things. You can use it for example to get notification how long you should vent if it is necessary.
 
-## Usage
+## Installation
+Install[HACS](https://hacs.xyz)
+
+Add this repository (https://github.com/HrGaertner/HA-vent-optimization) as custom repository in HACS/integrations through the 3-dots in the top right corner.
+
+Add this this integration (ventoptimization) through the button in the bottom left corner and restart
+
+Go to the paragraph [Configuration](https://github.com/HrGaertner/HA-vent-optimization#Configuration)
+
+I am currently working on getting this integration added to the default HACS repository
+
+## Configuration
 This Integration is configureable via the configuration.yaml. Here is a sample integration:
 
 ```yaml
@@ -22,4 +33,4 @@ If you want to customize the opimization to adapt to your local situation gather
 To learn about the model and the optimization itself have look at the whole repository dedicated to the development of the model and the webapp
 
 
-### This integration used the [Mold Indicator Integration](https://www.home-assistant.io/integrations/mold_indicator/) as a minimal template to start from.
+**This integration used the [Mold Indicator Integration](https://www.home-assistant.io/integrations/mold_indicator/) as a minimal template to start from.**
