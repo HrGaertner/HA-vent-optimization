@@ -8,7 +8,8 @@ A integration for Home-Assistant that predicts how long you have to open your wi
 Install [HACS](https://hacs.xyz)
 
 Use this link:
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=HrGaertner&repository=HA-vent-optimization&category=optimization)
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=HrGaertner&repository=HA-vent-optimization&category=integration)
 
 And install the configuration
 
