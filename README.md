@@ -29,7 +29,7 @@ sensor:
 ```
 
 ## The optimization
-If you want to customize the opimization to adapt to your local situation gather trainingsdata and use either this [jupyter notebook](https://github.com/HrGaertner/vent-optimization/blob/main/model-training.ipynb) or this [webapp](https://hrgaertner.github.io/vent-optimization/) (under "Training" (i am sorry it is currently German only))
+If you want to customize the opimization to adapt to your local situation gather trainingsdata and use either this [jupyter notebook](https://github.com/HrGaertner/vent-optimization/blob/main/code/model%7Ctraining/model-training.ipynb) or this [webapp](https://hrgaertner.github.io/vent-optimization/) (under "Training" (i am sorry it is currently German only))
 
 To learn about the model and the optimization itself have look at the whole repository dedicated to the development of the model and the webapp
 
