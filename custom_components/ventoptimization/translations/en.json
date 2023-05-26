@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vent Optimization",
+        "description": "An integration for Home-Assistant that predicts how long you have to open your windows in order to prevent mold and other nasty things.",
+        "data": {
+          "room_volume": "Room Volume",
+          "indoor_humidity_sensor": "Indoor Humidity Sensor",
+          "indoor_temp_sensor": "Indoor Temperature Sensor",
+          "outdoor_temp_sensor": "Outdoor Temperature Sensor",
+          "outdoor_humidity_sensor": "Outdoor Humidity Sensor",
+          "maximum_wished_humidity": "Maximum Wished Humidity",
+          "total_open_window_surface": "Total Open Window Surface"
+        }
+      }
+    }
+  }
+}
