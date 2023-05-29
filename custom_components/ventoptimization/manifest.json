@@ -2,6 +2,7 @@
     "domain": "ventoptimization",
     "name": "Vent optimization",
     "codeowners": ["@HrGaertner"],
+    "config_flow": true,
     "dependencies": [],
     "documentation": "https://github.com/HrGaertner/vent-optimization",
     "iot_class": "local_polling",

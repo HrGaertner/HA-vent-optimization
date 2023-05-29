@@ -8,6 +8,7 @@ import voluptuous as vol
 
 from homeassistant import util
 from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorEntity
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     ATTR_UNIT_OF_MEASUREMENT,
     CONF_NAME,
@@ -25,27 +26,19 @@ from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 from homeassistant.util.unit_conversion import TemperatureConverter
 from homeassistant.util.unit_system import METRIC_SYSTEM
 
+from .const import *
+
 _LOGGER = logging.getLogger(__name__)
 
 ATTR_MAXIMUM_HUMIDITY = "maximum_possible_indoor_absolute_humidity"
 ATTR_INDOOR_ABSOLUTE_HUMIDITY = "absolute_humidity_inside"
 ATTR_OUTDOOR_ABSOLUTE_HUMIDITY = "absolute_humidity_outside"
 
-CONF_INDOOR_HUMIDITY = "indoor_humidity_sensor"
-CONF_INDOOR_TEMP = "indoor_temp_sensor"
-CONF_OUTDOOR_TEMP = "outdoor_temp_sensor"
-CONF_OUTDOOR_HUMIDITY = "outdoor_humidity_sensor"
-CONF_MAX_ALLOWED_HUMIDITY = "maximum_wished_humidity"
-CONF_ROOM_VOLUME = "room_volume"
-CONF_WINDOW_SIZE = "total_open_window_surface"
-
 # Parameters of the model
 k_1 = 49.9737675 
 k_2 = 2.28452262
 k_3 = 49.3679433
 k_4 = 8.39747826
-
-DEFAULT_NAME = "vent optimization time"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
@@ -59,7 +52,6 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
     }
 )
-
 
 async def async_setup_platform(
     hass: HomeAssistant,
@@ -77,21 +69,45 @@ async def async_setup_platform(
     window_size = config.get(CONF_WINDOW_SIZE)
     room_volume = config.get(CONF_ROOM_VOLUME)
 
-    async_add_entities(
-        [
-            VentTime(
-                name,
-                indoor_temp_sensor,
-                outdoor_temp_sensor,
-                indoor_humidity_sensor,
-                outdoor_humidity_sensor,
-                max_humidity_allowed,
-                window_size,
-                room_volume,
-            )
-        ],
-        False,
-    )
+    async_add_entities([
+        VentTime(
+            name,
+            indoor_temp_sensor,
+            outdoor_temp_sensor,
+            indoor_humidity_sensor,
+            outdoor_humidity_sensor,
+            max_humidity_allowed,
+            window_size,
+            room_volume,
+        )])
+
+async def async_setup_entry(
+        hass: HomeAssistant,
+        config_entry: ConfigEntry,
+        async_add_entities: AddEntitiesCallback
+) -> None:
+    """Set up Vent time sensor through the UI."""
+    name = config_entry.data.get(CONF_NAME, DEFAULT_NAME)
+    indoor_temp_sensor = config_entry.data.get(CONF_INDOOR_TEMP)
+    outdoor_temp_sensor = config_entry.data.get(CONF_OUTDOOR_TEMP)
+    indoor_humidity_sensor = config_entry.data.get(CONF_INDOOR_HUMIDITY)
+    outdoor_humidity_sensor = config_entry.data.get(CONF_OUTDOOR_HUMIDITY)
+    max_humidity_allowed = config_entry.data.get(CONF_MAX_ALLOWED_HUMIDITY)
+    window_size = config_entry.data.get(CONF_WINDOW_SIZE)
+    room_volume = config_entry.data.get(CONF_ROOM_VOLUME)
+
+    async_add_entities([
+        VentTime(
+            name,
+            indoor_temp_sensor,
+            outdoor_temp_sensor,
+            indoor_humidity_sensor,
+            outdoor_humidity_sensor,
+            max_humidity_allowed,
+            window_size,
+            room_volume,
+        )
+    ])
 
 
 class VentTime(SensorEntity):
@@ -100,19 +116,21 @@ class VentTime(SensorEntity):
     _attr_should_poll = False
 
     def __init__(
-        self,
-        name,
-        indoor_temp_sensor,
-        outdoor_temp_sensor,
-        indoor_humidity_sensor,
-        outdoor_humidity_sensor,
-        max_humidity_allowed,
-        window_size,
-        room_volume,
+            self,
+            name,
+            indoor_temp_sensor,
+            outdoor_temp_sensor,
+            indoor_humidity_sensor,
+            outdoor_humidity_sensor,
+            max_humidity_allowed,
+            window_size,
+            room_volume,
     ):
         """Initialize the sensor."""
-        self._state = None
         self._name = name
+        self._state = None
+        self._unique_id = str(name).lower()
+
         self._indoor_temp_sensor = indoor_temp_sensor
         self._indoor_humidity_sensor = indoor_humidity_sensor
         self._outdoor_temp_sensor = outdoor_temp_sensor
@@ -154,55 +172,46 @@ class VentTime(SensorEntity):
             if self._update_sensor(entity, old_state, new_state):
                 self.async_schedule_update_ha_state(True)
 
-        @callback
-        def vent_time_startup(event):
-            """Add listeners and get 1st state."""
-            _LOGGER.debug("Startup for %s", self.entity_id)
-
-            async_track_state_change_event(
-                self.hass, list(self._entities), vent_time_sensors_state_listener
-            )
-
-            # Read initial state
-            indoor_temp = self.hass.states.get(self._indoor_temp_sensor)
-            outdoor_temp = self.hass.states.get(self._outdoor_temp_sensor)
-            indoor_hum = self.hass.states.get(self._indoor_humidity_sensor)
-            outdoor_hum = self.hass.states.get(self._outdoor_humidity_sensor)
-
-            schedule_update = self._update_sensor(
-                self._indoor_temp_sensor, None, indoor_temp
-            )
-
-            schedule_update = (
-                False
-                if not self._update_sensor(
-                    self._outdoor_temp_sensor, None, outdoor_temp
-                )
-                else schedule_update
-            )
-
-            schedule_update = (
-                False
-                if not self._update_sensor(
-                    self._indoor_humidity_sensor, None, indoor_hum
-                )
-                else schedule_update
-            )
-
-            schedule_update = (
-                False
-                if not self._update_sensor(
-                    self._outdoor_humidity_sensor, None, outdoor_hum
-                )
-                else schedule_update
-            )
-
-            if schedule_update:
-                self.async_schedule_update_ha_state(True)
-
-        self.hass.bus.async_listen_once(
-            EVENT_HOMEASSISTANT_START, vent_time_startup
+        async_track_state_change_event(
+            self.hass, list(self._entities), vent_time_sensors_state_listener
         )
+
+        # Read initial state
+        indoor_temp = self.hass.states.get(self._indoor_temp_sensor)
+        outdoor_temp = self.hass.states.get(self._outdoor_temp_sensor)
+        indoor_hum = self.hass.states.get(self._indoor_humidity_sensor)
+        outdoor_hum = self.hass.states.get(self._outdoor_humidity_sensor)
+
+        schedule_update = self._update_sensor(
+            self._indoor_temp_sensor, None, indoor_temp
+        )
+
+        schedule_update = (
+            False
+            if not self._update_sensor(
+                self._outdoor_temp_sensor, None, outdoor_temp
+            )
+            else schedule_update
+        )
+
+        schedule_update = (
+            False
+            if not self._update_sensor(
+                self._indoor_humidity_sensor, None, indoor_hum
+            )
+            else schedule_update
+        )
+
+        schedule_update = (
+            False
+            if not self._update_sensor(
+                self._outdoor_humidity_sensor, None, outdoor_hum
+            )
+            else schedule_update
+        )
+
+        if schedule_update:
+            self.async_schedule_update_ha_state(True)
 
     def _update_sensor(self, entity, old_state, new_state):
         """Update information based on new sensor states."""
@@ -375,6 +384,10 @@ class VentTime(SensorEntity):
     def name(self):
         """Return the name."""
         return self._name
+
+    @property
+    def unique_id(self) -> str:
+        return self._unique_id
 
     @property
     def native_unit_of_measurement(self):
