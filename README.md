@@ -14,18 +14,8 @@ Use this link:
 And install the configuration
 
 ## Configuration
-This Integration is configureable via the configuration.yaml. Here is a sample integration:
-
-```yaml
-sensor:
-  - platform: ventoptimization
-    indoor_temp_sensor: sensor.indoor_temp
-    indoor_humidity_sensor: sensor.indoor_humidity
-    outdoor_temp_sensor: sensor.outdoor_temp
-    outdoor_humidity_sensor: sensor.outdoor_humidity
-    maximum_wished_humidity: 65.0 # Everything beneath 70% is fine, but i use 65 as a safty buffer
-    room_volume: 30.0 # in m³
-    total_open_window_surface: 0.75 # in m² (all windows combined)
+You can configure and setup this integration via a Config Flow. Thanks a lot to [Alexwijn](https://github.com/Alexwijn)
+![image](https://github.com/HrGaertner/HA-vent-optimization/assets/53614377/d1e04abb-b06d-4407-89e2-3754c54de6bf)
 ```
 
 ## The optimization
