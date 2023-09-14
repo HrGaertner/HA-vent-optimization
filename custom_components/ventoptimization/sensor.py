@@ -128,7 +128,7 @@ class VentTime(SensorEntity):
     ):
         """Initialize the sensor."""
         self._name = name
-        self._state = None
+        self._state = 0
         self._unique_id = str(name).lower()
 
         self._indoor_temp_sensor = indoor_temp_sensor
@@ -366,16 +366,16 @@ class VentTime(SensorEntity):
 
         if self._indoor_absolute_humidity <= self._outdoor_absolute_humidity:
             _LOGGER.debug("Venting has no point, the outside is to humid")
-            self._state = "∞"
+            self._state = 0
         else:
             # One could use a binary search here, but it is unecessary
             for i in range(301):
                 if (self._humidity_model(i)/self._calc_e_s(self._temperature_model(i)))*100 <= self._max_hum_allowed:
-                    self._state= f"{int(i):d}"
+                    self._state= int(i)
                     break
             else:
-                self._state = ">5h"
-                _LOGGER.debug("Venting would take longer than 5h")
+                self._state = 400
+                _LOGGER.notice("Venting would take longer than 5h")
 
 
         _LOGGER.debug("You have to vent %s minutes", self._state)
