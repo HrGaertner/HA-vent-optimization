@@ -365,7 +365,7 @@ class VentTime(SensorEntity):
         """Calculate the time until the humidity is under max_allowed_hum"""
 
         if self._indoor_absolute_humidity <= self._outdoor_absolute_humidity:
-            _LOGGER.debug("Venting has no point, the outside is to humid")
+            _LOGGER.notice("Venting has no point, the outside is to humid")
             self._state = 0
         else:
             # One could use a binary search here, but it is unecessary
