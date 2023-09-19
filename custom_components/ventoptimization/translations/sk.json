@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Optimalizácia vetrania",
+        "description": "Integrácia pre Home-Assistant, ktorá predpovedá, ako dlho musíte otvárať okná, aby ste predišli plesniam a iným nepríjemným veciam.",
+        "data": {
+          "room_volume": "Objem miestnosti",
+          "indoor_humidity_sensor": "Vnútorný snímač vlhkosti",
+          "indoor_temp_sensor": "Vnútorný snímač teploty",
+          "outdoor_temp_sensor": "Vonkajší snímač teploty",
+          "outdoor_humidity_sensor": "Vonkajší snímač vlhkosti",
+          "maximum_wished_humidity": "Maximálna požadovaná vlhkosť",
+          "total_open_window_surface": "Celková plocha otvoreného okna"
+        }
+      }
+    }
+  }
+}
