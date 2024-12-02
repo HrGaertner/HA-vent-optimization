@@ -366,7 +366,7 @@ class VentTime(SensorEntity):
 
         if self._indoor_absolute_humidity <= self._outdoor_absolute_humidity:
             _LOGGER.debug("Venting has no point, the outside is to humid")
-            self._state = "∞"
+            self._state = 0
         else:
             # One could use a binary search here, but it is unecessary
             for i in range(301):
@@ -374,7 +374,7 @@ class VentTime(SensorEntity):
                     self._state= f"{int(i):d}"
                     break
             else:
-                self._state = ">5h"
+                self._state = 999999999
                 _LOGGER.debug("Venting would take longer than 5h")
 
 
