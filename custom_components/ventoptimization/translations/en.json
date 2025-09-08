@@ -14,6 +14,10 @@
           "total_open_window_surface": "Total Open Window Surface"
         }
       }
+    },
+    "abort": {
+      "already_configured": "Entry with the same name is already configured",
+      "reconfigure_successful": "Successfully reconfigured"
     }
   }
 }
