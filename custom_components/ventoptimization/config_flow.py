@@ -24,11 +24,27 @@ class VentOptimizationFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self._window_size = 0.75
         self._room_volume = 30
         self._max_allowed_humidity = 65
+        self._existing_entry: ConfigEntry | None = None
         super().__init__(*args, **kwargs)
 
     async def async_step_user(self, _user_input=None) -> FlowResult:
         if _user_input is not None:
-            return self.async_create_entry(title=_user_input[CONF_NAME], data=_user_input)
+            await self.async_set_unique_id(
+                _user_input[CONF_NAME].lower().replace(" ", "_")
+            )
+            if self._existing_entry is None:
+                self._abort_if_unique_id_configured()
+            else:
+                self.hass.config_entries.async_update_entry(
+                    self._existing_entry, data=_user_input
+                )
+                self.hass.async_create_task(
+                    self.hass.config_entries.async_reload(self._existing_entry.entry_id)
+                )
+                return self.async_abort(reason="reconfigure_successful")
+            return self.async_create_entry(
+                title=_user_input[CONF_NAME], data=_user_input
+            )
 
         humidity_entity_selector = selector.EntitySelector(
             selector.EntitySelectorConfig(device_class=SensorDeviceClass.HUMIDITY)
@@ -58,13 +74,12 @@ class VentOptimizationFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             }),
         )
 
-
-    async def async_step_reconfigure(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+    async def async_step_reconfigure(self, _user_input: dict[str, Any] | None = None) -> FlowResult:
         self._existing_entry = self.hass.config_entries.async_get_entry(
             self.context["entry_id"]
         )
         assert self._existing_entry is not None
-        if user_input is None:
+        if _user_input is None:
             self._name = self._existing_entry.data.get(CONF_NAME, self._indoor_temp)
             self._indoor_temp = self._existing_entry.data.get(CONF_INDOOR_TEMP, self._indoor_temp)
             self._outdoor_temp = self._existing_entry.data.get(CONF_OUTDOOR_TEMP, self._outdoor_temp)
@@ -73,4 +88,4 @@ class VentOptimizationFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             self._window_size = self._existing_entry.data.get(CONF_WINDOW_SIZE, self._window_size)
             self._room_volume = self._existing_entry.data.get(CONF_ROOM_VOLUME, self._room_volume)
             self._max_allowed_humidity = self._existing_entry.data.get(CONF_MAX_ALLOWED_HUMIDITY, self._max_allowed_humidity)
-        return await self.async_step_user(user_input)
+        return await self.async_step_user(_user_input)
