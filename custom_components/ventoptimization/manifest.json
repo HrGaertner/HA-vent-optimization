@@ -4,9 +4,9 @@
     "codeowners": ["@HrGaertner"],
     "config_flow": true,
     "dependencies": [],
-    "documentation": "https://github.com/HrGaertner/vent-optimization",
+    "documentation": "https://github.com/HrGaertner/HA-vent-optimization",
     "iot_class": "local_polling",
-    "issue_tracker": "https://github.com/HrGaertner/vent-optimization/issues/",
+    "issue_tracker": "https://github.com/HrGaertner/HA-vent-optimization/issues/",
     "requirements": [],
     "version": "0.8"
   }
