@@ -12,7 +12,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     This function is called by Home Assistant when the integration is set up with the UI.
     """
     # Forward entry setup for the sensor platform
-    await entry.async_create_task(await hass.config_entries.async_forward_entry_setups(entry, SENSOR_DOMAIN))
+    await hass.config_entries.async_forward_entry_setups(entry, [SENSOR_DOMAIN])
 
     # Add an update listener for this entry
     entry.async_on_unload(entry.add_update_listener(async_reload_entry))

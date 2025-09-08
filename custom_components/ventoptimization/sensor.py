@@ -322,7 +322,7 @@ class VentTime(SensorEntity):
         """Calculate latest state."""
         _LOGGER.debug("Update state for %s", self.entity_id)
         # check all sensors
-        if None in (self._indoor_temp, self._indoor_hum, self._outdoor_temp):
+        if None in (self._indoor_temp, self._indoor_hum, self._outdoor_temp, self._outdoor_hum):
             self._available = False
             self._outdoor_absolute_humidity = None
             self._indoor_absolute_humidity = None
