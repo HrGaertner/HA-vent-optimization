@@ -226,11 +226,11 @@ class VentTime(SensorEntity):
 
         if entity == self._indoor_temp_sensor:
             self._indoor_temp = VentTime._update_temp_sensor(new_state)
-        elif entity == self._outdoor_temp_sensor:
+        if entity == self._outdoor_temp_sensor:
             self._outdoor_temp = VentTime._update_temp_sensor(new_state)
-        elif entity == self._indoor_humidity_sensor:
+        if entity == self._indoor_humidity_sensor:
             self._indoor_hum = VentTime._update_hum_sensor(new_state)
-        elif entity == self._outdoor_humidity_sensor:
+        if entity == self._outdoor_humidity_sensor:
             self._outdoor_hum = VentTime._update_hum_sensor(new_state)
 
         return True
@@ -242,7 +242,7 @@ class VentTime(SensorEntity):
 
         # Return an error if the sensor change its state to Unknown.
         if state.state == STATE_UNKNOWN:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "Unable to parse temperature sensor %s with state: %s",
                 state.entity_id,
                 state.state,
@@ -252,7 +252,7 @@ class VentTime(SensorEntity):
         unit = state.attributes.get(ATTR_UNIT_OF_MEASUREMENT)
 
         if (temp := util.convert(state.state, float)) is None:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "Unable to parse temperature sensor %s with state: %s",
                 state.entity_id,
                 state.state,
@@ -283,7 +283,7 @@ class VentTime(SensorEntity):
 
         # Return an error if the sensor change its state to Unknown.
         if state.state == STATE_UNKNOWN:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "Unable to parse humidity sensor %s, state: %s",
                 state.entity_id,
                 state.state,
@@ -291,7 +291,7 @@ class VentTime(SensorEntity):
             return None
 
         if (hum := util.convert(state.state, float)) is None:
-            _LOGGER.error(
+            _LOGGER.debug(
                 "Unable to parse humidity sensor %s, state: %s",
                 state.entity_id,
                 state.state,
@@ -322,7 +322,7 @@ class VentTime(SensorEntity):
         """Calculate latest state."""
         _LOGGER.debug("Update state for %s", self.entity_id)
         # check all sensors
-        if None in (self._indoor_temp, self._indoor_hum, self._outdoor_temp):
+        if None in (self._indoor_temp, self._indoor_hum, self._outdoor_temp, self._outdoor_hum):
             self._available = False
             self._outdoor_absolute_humidity = None
             self._indoor_absolute_humidity = None
