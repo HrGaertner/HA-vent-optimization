@@ -3,7 +3,7 @@ from typing import Any
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.components.sensor import SensorDeviceClass
-from homeassistant.const import CONF_NAME, PERCENTAGE, UnitOfVolume
+from homeassistant.const import CONF_NAME, PERCENTAGE, UnitOfArea, UnitOfVolume
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers import selector
 
@@ -63,7 +63,7 @@ class VentOptimizationFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_INDOOR_HUMIDITY, default=self._indoor_humidity): humidity_entity_selector,
                 vol.Required(CONF_OUTDOOR_HUMIDITY, default=self._outdoor_humidity): humidity_entity_selector,
                 vol.Optional(CONF_WINDOW_SIZE, default=self._window_size): selector.NumberSelector(
-                    selector.NumberSelectorConfig(min=0, max=10, step=0.1, unit_of_measurement=UnitOfVolume.CUBIC_METERS)
+                    selector.NumberSelectorConfig(min=0, max=10, step=0.1, unit_of_measurement=UnitOfArea.SQUARE_METERS)
                 ),
                 vol.Optional(CONF_ROOM_VOLUME, default=self._room_volume): selector.NumberSelector(
                     selector.NumberSelectorConfig(min=0, max=100, step=0.1, unit_of_measurement=UnitOfVolume.CUBIC_METERS)

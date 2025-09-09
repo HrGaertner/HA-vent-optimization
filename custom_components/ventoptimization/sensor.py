@@ -342,9 +342,9 @@ class VentTime(SensorEntity):
     def _calc_e_s(self, temp):
         """Calculate the maximum possible absolute humidity for the indoor temperature"""
         # According to https://journals.ametsoc.org/view/journals/bams/86/2/bams-86-2-225.xml?tab_body=pdf Equation 6 p.226
-        C_1 = 610.94 #Kp
-        A_1 =  17.625
-        B_1 =243.04 #°C
+        C_1 = 610.94 # Kp
+        A_1 = 17.625
+        B_1 = 243.04 # °C
         return C_1*math.exp((A_1*temp)/(B_1+temp))
 
     def _calc_indoor_absolute_humidity(self):
@@ -371,10 +371,10 @@ class VentTime(SensorEntity):
             # One could use a binary search here, but it is unecessary
             for i in range(301):
                 if (self._humidity_model(i)/self._calc_e_s(self._temperature_model(i)))*100 <= self._max_hum_allowed:
-                    self._state= f"{int(i):d}"
+                    self._state = i
                     break
             else:
-                self._state = 999999999
+                self._state = None
                 _LOGGER.debug("Venting would take longer than 5h")
 
 
@@ -408,6 +408,6 @@ class VentTime(SensorEntity):
     def extra_state_attributes(self):
         """Return the state attributes."""
         return {
-            ATTR_INDOOR_ABSOLUTE_HUMIDITY: round(self._indoor_absolute_humidity, 2) ,
+            ATTR_INDOOR_ABSOLUTE_HUMIDITY: round(self._indoor_absolute_humidity, 2),
             ATTR_OUTDOOR_ABSOLUTE_HUMIDITY: round(self._outdoor_absolute_humidity, 2)
         }
