@@ -374,7 +374,7 @@ class VentTime(SensorEntity):
                     self._state = i
                     break
             else:
-                self._state = None
+                self._state = 300
                 _LOGGER.debug("Venting would take longer than 5h")
 
 
