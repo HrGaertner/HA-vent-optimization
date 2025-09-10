@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vent Optimization",
+        "description": "Eine Integration für Home Assistant, die vorhersagt, wie lange du lüften musst, um Schimmel zu verhindern.",
+        "data": {
+          "room_volume": "Zimmervolumen",
+          "indoor_humidity_sensor": "Innenluftluftfeuchtigkeits-Sensor",
+          "indoor_temp_sensor": "Innentemperatur-Sensor",
+          "outdoor_temp_sensor": "Außentemperatur-Sensor",
+          "outdoor_humidity_sensor": "Außenluftfeuchtigkeits-Sensor",
+          "maximum_wished_humidity": "Maximale gewünschte Luftfeuchtigkeit",
+          "total_open_window_surface": "Gesamtfläche der geöffneten Fenster"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Ein Eintrag mit diesem Namen ist bereits konfiguriert",
+      "reconfigure_successful": "Erfolgreich neu konfiguriert"
+    }
+  }
+}

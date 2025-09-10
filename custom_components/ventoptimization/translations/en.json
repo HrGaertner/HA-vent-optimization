@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Vent Optimization",
-        "description": "An integration for Home-Assistant that predicts how long you have to open your windows in order to prevent mold and other nasty things.",
+        "description": "An integration for Home Assistant that predicts how long you have to open your windows in order to prevent mold and other nasty things.",
         "data": {
           "room_volume": "Room Volume",
           "indoor_humidity_sensor": "Indoor Humidity Sensor",
