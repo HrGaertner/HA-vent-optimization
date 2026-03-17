@@ -12,8 +12,12 @@
           "outdoor_humidity_sensor": "Vonkajší snímač vlhkosti",
           "maximum_wished_humidity": "Maximálna požadovaná vlhkosť",
           "total_open_window_surface": "Celková plocha otvoreného okna"
-        }
+       }
       }
+    },
+    "abort": {
+      "already_configured": "Záznam s rovnakým názvom je už nakonfigurovaný",
+      "reconfigure_successful": "Úspešne prekonfigurované"
     }
   }
 }
